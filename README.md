@@ -1,7 +1,4 @@
 # Restaurant App - Front-End
-
-Front-end moderno e elegante para aplicativo de restaurante, construído com **Ionic React**, **TypeScript**, **Axios** e **SWR**.
-
 ## Funcionalidades
 
 ### Para Usuários
@@ -162,23 +159,6 @@ npm run preview
 # Lint
 npm run lint
 ```
-
-## Variáveis de Ambiente
-
-| Variável | Descrição | Padrão |
-|----------|-----------|--------|
-| `VITE_API_URL` | URL da API backend | `http://localhost:3000` |
-
-## Próximos Passos (Possíveis Melhorias)
-
-- [ ] Adicionar fotos de produtos via upload
-- [ ] Notificações push para pedidos
-- [ ] Chat entre usuário e restaurante
-- [ ] Sistema de avaliações
-- [ ] Histórico de pedidos com filtros
-- [ ] Relatórios para admin
-- [ ] Cupons de desconto
-- [ ] Modo escuro completo
 
 ## Como Usar
 

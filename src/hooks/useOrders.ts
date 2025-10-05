@@ -1,5 +1,5 @@
-import useSWR from 'swr';
-import { orderService } from '../services/orderService';
+import useSWR from 'swr'
+import { orderService } from '../services/orderService'
 
 export const useUserOrders = (userId: string | null) => {
   const { data, error, mutate } = useSWR(
@@ -8,15 +8,15 @@ export const useUserOrders = (userId: string | null) => {
     {
       refreshInterval: 10000, // Refresh every 10 seconds
     }
-  );
+  )
 
   return {
     orders: data?.orders || [],
     isLoading: !error && !data && userId !== null,
     isError: error,
     mutate,
-  };
-};
+  }
+}
 
 export const useAdminOrders = (adminUserId: string | null, status?: string) => {
   const { data, error, mutate } = useSWR(
@@ -25,15 +25,15 @@ export const useAdminOrders = (adminUserId: string | null, status?: string) => {
     {
       refreshInterval: 5000, // Refresh every 5 seconds for admin
     }
-  );
+  )
 
   return {
     orders: data?.orders || [],
     isLoading: !error && !data && adminUserId !== null,
     isError: error,
     mutate,
-  };
-};
+  }
+}
 
 export const useDashboard = (adminUserId: string | null) => {
   const { data, error, mutate } = useSWR(
@@ -42,7 +42,7 @@ export const useDashboard = (adminUserId: string | null) => {
     {
       refreshInterval: 15000, // Refresh every 15 seconds
     }
-  );
+  )
 
   return {
     stats: data?.stats,
@@ -50,5 +50,5 @@ export const useDashboard = (adminUserId: string | null) => {
     isLoading: !error && !data && adminUserId !== null,
     isError: error,
     mutate,
-  };
-};
+  }
+}

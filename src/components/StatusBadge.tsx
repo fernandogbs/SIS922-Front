@@ -1,41 +1,41 @@
-import React from 'react';
-import { IonBadge } from '@ionic/react';
-import { Order } from '../types';
+import React from 'react'
+import { IonBadge } from '@ionic/react'
+import { Order } from '../types'
 
 interface StatusBadgeProps {
-  status: Order['status'];
+  status: Order['status']
 }
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+export const StatusBadge = ({ status }: StatusBadgeProps) => {
   const getStatusColor = () => {
     switch (status) {
       case 'pending':
-        return 'warning';
+        return 'warning'
       case 'accepted':
-        return 'primary';
+        return 'primary'
       case 'completed':
-        return 'success';
+        return 'success'
       case 'declined':
-        return 'danger';
+        return 'danger'
       default:
-        return 'medium';
+        return 'medium'
     }
-  };
+  }
 
   const getStatusText = () => {
     switch (status) {
       case 'pending':
-        return 'Pendente';
+        return 'Pendente'
       case 'accepted':
-        return 'Aceito';
+        return 'Aceito'
       case 'completed':
-        return 'Concluído';
+        return 'Concluído'
       case 'declined':
-        return 'Recusado';
+        return 'Recusado'
       default:
-        return status;
+        return status
     }
-  };
+  }
 
-  return <IonBadge color={getStatusColor()}>{getStatusText()}</IonBadge>;
-};
+  return <IonBadge color={getStatusColor()}>{getStatusText()}</IonBadge>
+}

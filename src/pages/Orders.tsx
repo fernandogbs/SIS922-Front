@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   IonContent,
   IonHeader,
@@ -10,25 +10,25 @@ import {
   IonIcon,
   IonRefresher,
   IonRefresherContent,
-} from '@ionic/react';
-import { arrowBackOutline, refreshOutline } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useUserOrders } from '../hooks/useOrders';
-import { OrderCard } from '../components/OrderCard';
-import { LoadingSpinner } from '../components/LoadingSpinner';
-import { Order } from '../types';
-import './Orders.css';
+} from '@ionic/react'
+import { arrowBackOutline, refreshOutline } from 'ionicons/icons'
+import { useHistory } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { useUserOrders } from '../hooks/useOrders'
+import { OrderCard } from '../components/OrderCard'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { Order } from '../types'
+import './Orders.css'
 
-const Orders: React.FC = () => {
-  const { user } = useAuth();
-  const history = useHistory();
-  const { orders, isLoading, mutate } = useUserOrders(user?._id || null);
+const Orders = () => {
+  const { user } = useAuth()
+  const history = useHistory()
+  const { orders, isLoading, mutate } = useUserOrders(user?._id || null)
 
   const handleRefresh = async (event: CustomEvent) => {
-    await mutate();
-    event.detail.complete();
-  };
+    await mutate()
+    event.detail.complete()
+  }
 
   return (
     <IonPage>
@@ -78,7 +78,7 @@ const Orders: React.FC = () => {
         </div>
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
-export default Orders;
+export default Orders

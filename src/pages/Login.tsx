@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   IonContent,
   IonPage,
@@ -10,65 +10,60 @@ import {
   IonButton,
   IonToast,
   IonLoading,
-} from '@ionic/react';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { authService } from '../services/authService';
-import './Login.css';
+} from '@ionic/react'
+import { useHistory } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { authService } from '../services/authService'
+import './Login.css'
 
 const Login: React.FC = () => {
-  const [name, setName] = useState('');
-  const [cellphone, setCellphone] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [showToast, setShowToast] = useState(false);
+  const [name, setName] = useState('')
+  const [cellphone, setCellphone] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [showToast, setShowToast] = useState(false)
 
-  const { login } = useAuth();
-  const history = useHistory();
+  const { login } = useAuth()
+  const history = useHistory()
 
   const handleLogin = async () => {
     if (!name.trim() || !cellphone.trim()) {
-      setError('Nome e telefone são obrigatórios');
-      setShowToast(true);
-      return;
+      setError('Nome e telefone são obrigatórios')
+      setShowToast(true)
+      return
     }
 
-    setLoading(true);
-    setError('');
+    setLoading(true)
+    setError('')
 
     try {
       const response = await authService.login({
         name: name.trim(),
         cellphone: cellphone.trim(),
-      });
+      })
 
       if (response.success && response.user) {
-        login(response.user);
+        login(response.user)
 
         // Redirect based on user type
-        if (response.user.type === 'admin') {
-          history.push('/admin/dashboard');
-        } else {
-          history.push('/products');
-        }
+        if (response.user.type === 'admin') history.push('/admin/dashboard')
+        else history.push('/products')
       } else {
-        setError(response.message || 'Erro ao fazer login');
-        setShowToast(true);
+        setError(response.message || 'Erro ao fazer login')
+        setShowToast(true)
       }
     } catch (err) {
-      console.error('Login error:', err);
-      setError('Erro ao conectar com o servidor');
-      setShowToast(true);
+      console.error('Login error:', err)
+      setError('Erro ao conectar com o servidor')
+      setShowToast(true)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleLogin();
-    }
-  };
+    if (e.key === 'Enter') handleLogin()
+  }
 
   return (
     <IonPage>
@@ -91,7 +86,7 @@ const Login: React.FC = () => {
                   type="text"
                   value={name}
                   onIonInput={(e) => setName(e.detail.value!)}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   className="custom-input"
                 />
               </div>
@@ -103,7 +98,7 @@ const Login: React.FC = () => {
                   type="tel"
                   value={cellphone}
                   onIonInput={(e) => setCellphone(e.detail.value!)}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   className="custom-input"
                 />
               </div>
@@ -134,7 +129,7 @@ const Login: React.FC = () => {
         />
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

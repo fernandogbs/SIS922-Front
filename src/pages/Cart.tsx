@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   IonContent,
   IonHeader,
@@ -15,89 +15,89 @@ import {
   IonTextarea,
   IonToast,
   IonLoading,
-} from '@ionic/react';
-import { arrowBackOutline, trashOutline } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { CartItem } from '../types';
-import { useCart } from '../hooks/useCart';
-import { LoadingSpinner } from '../components/LoadingSpinner';
-import { cartService } from '../services/cartService';
-import { orderService } from '../services/orderService';
-import './Cart.css';
+} from '@ionic/react'
+import { arrowBackOutline, trashOutline } from 'ionicons/icons'
+import { useHistory } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { CartItem } from '../types'
+import { useCart } from '../hooks/useCart'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { cartService } from '../services/cartService'
+import { orderService } from '../services/orderService'
+import './Cart.css'
 
 const Cart: React.FC = () => {
-  const [notes, setNotes] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastColor, setToastColor] = useState<'success' | 'danger'>('success');
+  const [notes, setNotes] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
+  const [toastColor, setToastColor] = useState<'success' | 'danger'>('success')
 
-  const { user } = useAuth();
-  const history = useHistory();
-  const { cart, isLoading, mutate } = useCart(user?._id || null);
+  const { user } = useAuth()
+  const history = useHistory()
+  const { cart, isLoading, mutate } = useCart(user?._id || null)
 
   const handleRemoveItem = async (productId: string) => {
-    if (!user) return;
+    if (!user) return
 
     try {
-      await cartService.removeFromCart(user._id, productId);
-      mutate();
-      setToastMessage('Item removido do carrinho');
-      setToastColor('success');
-      setShowToast(true);
+      await cartService.removeFromCart(user._id, productId)
+      mutate()
+      setToastMessage('Item removido do carrinho')
+      setToastColor('success')
+      setShowToast(true)
     } catch (error) {
-      console.error('Error removing item:', error);
-      setToastMessage('Erro ao remover item');
-      setToastColor('danger');
-      setShowToast(true);
+      console.error('Error removing item:', error)
+      setToastMessage('Erro ao remover item')
+      setToastColor('danger')
+      setShowToast(true)
     }
-  };
+  }
 
   const handleClearCart = async () => {
-    if (!user) return;
+    if (!user) return
 
     try {
-      await cartService.clearCart(user._id);
-      mutate();
-      setToastMessage('Carrinho limpo');
-      setToastColor('success');
-      setShowToast(true);
+      await cartService.clearCart(user._id)
+      mutate()
+      setToastMessage('Carrinho limpo')
+      setToastColor('success')
+      setShowToast(true)
     } catch (error) {
-      console.error('Error clearing cart:', error);
-      setToastMessage('Erro ao limpar carrinho');
-      setToastColor('danger');
-      setShowToast(true);
+      console.error('Error clearing cart:', error)
+      setToastMessage('Erro ao limpar carrinho')
+      setToastColor('danger')
+      setShowToast(true)
     }
-  };
+  }
 
   const handleCheckout = async () => {
-    if (!user || !cart || cart.items.length === 0) return;
+    if (!user || !cart || cart.items.length === 0) return
 
-    setLoading(true);
+    setLoading(true)
     try {
       await orderService.createOrder({
         userId: user._id,
         notes: notes.trim() || undefined,
-      });
+      })
 
-      mutate();
-      setToastMessage('Pedido realizado com sucesso!');
-      setToastColor('success');
-      setShowToast(true);
+      mutate()
+      setToastMessage('Pedido realizado com sucesso!')
+      setToastColor('success')
+      setShowToast(true)
 
       setTimeout(() => {
-        history.push('/orders');
-      }, 1500);
+        history.push('/orders')
+      }, 1500)
     } catch (error) {
-      console.error('Error creating order:', error);
-      setToastMessage('Erro ao finalizar pedido');
-      setToastColor('danger');
-      setShowToast(true);
+      console.error('Error creating order:', error)
+      setToastMessage('Erro ao finalizar pedido')
+      setToastColor('danger')
+      setShowToast(true)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -106,10 +106,10 @@ const Cart: React.FC = () => {
           <LoadingSpinner message="Carregando carrinho..." />
         </IonContent>
       </IonPage>
-    );
+    )
   }
 
-  const isEmpty = !cart || cart.items.length === 0;
+  const isEmpty = !cart || cart.items.length === 0
 
   return (
     <IonPage>
@@ -206,7 +206,7 @@ const Cart: React.FC = () => {
         />
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
-export default Cart;
+export default Cart

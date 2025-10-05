@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   IonContent,
   IonHeader,
@@ -23,23 +23,23 @@ import {
   IonCol,
   IonToast,
   IonLoading,
-} from '@ionic/react';
-import { arrowBackOutline, addOutline, closeOutline } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useProducts } from '../hooks/useProducts';
-import { ProductCard } from '../components/ProductCard';
-import { LoadingSpinner } from '../components/LoadingSpinner';
-import { productService } from '../services/productService';
-import { Product } from '../types';
-import './AdminProducts.css';
+} from '@ionic/react'
+import { arrowBackOutline, addOutline, closeOutline } from 'ionicons/icons'
+import { useHistory } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { useProducts } from '../hooks/useProducts'
+import { ProductCard } from '../components/ProductCard'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { productService } from '../services/productService'
+import { Product } from '../types'
+import './AdminProducts.css'
 
-const AdminProducts: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+const AdminProducts = () => {
+  const [showModal, setShowModal] = useState(false)
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
 
   const [formData, setFormData] = useState({
     name: '',
@@ -48,11 +48,11 @@ const AdminProducts: React.FC = () => {
     category: 'Prato Principal',
     imageUrl: '',
     available: true,
-  });
+  })
 
-  const { user } = useAuth();
-  const history = useHistory();
-  const { products, isLoading, mutate } = useProducts();
+  const { user } = useAuth()
+  const history = useHistory()
+  const { products, isLoading, mutate } = useProducts()
 
   const resetForm = () => {
     setFormData({
@@ -62,13 +62,13 @@ const AdminProducts: React.FC = () => {
       category: 'Prato Principal',
       imageUrl: '',
       available: true,
-    });
-    setEditingProduct(null);
-  };
+    })
+    setEditingProduct(null)
+  }
 
   const handleOpenModal = (product?: Product) => {
     if (product) {
-      setEditingProduct(product);
+      setEditingProduct(product)
       setFormData({
         name: product.name,
         description: product.description,
@@ -76,33 +76,33 @@ const AdminProducts: React.FC = () => {
         category: product.category,
         imageUrl: product.imageUrl || '',
         available: product.available,
-      });
+      })
     } else {
-      resetForm();
+      resetForm()
     }
-    setShowModal(true);
-  };
+    setShowModal(true)
+  }
 
   const handleCloseModal = () => {
-    setShowModal(false);
-    setTimeout(resetForm, 300);
-  };
+    setShowModal(false)
+    setTimeout(resetForm, 300)
+  }
 
   const handleSave = async () => {
     if (!user || !formData.name || !formData.description || !formData.price) {
-      setToastMessage('Preencha todos os campos obrigatórios');
-      setShowToast(true);
-      return;
+      setToastMessage('Preencha todos os campos obrigatórios')
+      setShowToast(true)
+      return
     }
 
-    const price = parseFloat(formData.price);
+    const price = parseFloat(formData.price)
     if (isNaN(price) || price <= 0) {
-      setToastMessage('Preço inválido');
-      setShowToast(true);
-      return;
+      setToastMessage('Preço inválido')
+      setShowToast(true)
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
     try {
       if (editingProduct) {
         // Update existing product
@@ -113,8 +113,8 @@ const AdminProducts: React.FC = () => {
           category: formData.category,
           imageUrl: formData.imageUrl || undefined,
           available: formData.available,
-        });
-        setToastMessage('Produto atualizado com sucesso!');
+        })
+        setToastMessage('Produto atualizado com sucesso!')
       } else {
         // Create new product
         await productService.createProduct(user._id, {
@@ -124,42 +124,42 @@ const AdminProducts: React.FC = () => {
           category: formData.category,
           imageUrl: formData.imageUrl || '',
           available: formData.available,
-        });
-        setToastMessage('Produto criado com sucesso!');
+        })
+        setToastMessage('Produto criado com sucesso!')
       }
 
-      mutate();
-      handleCloseModal();
-      setShowToast(true);
+      mutate()
+      handleCloseModal()
+      setShowToast(true)
     } catch (error) {
-      console.error('Error saving product:', error);
-      setToastMessage('Erro ao salvar produto');
-      setShowToast(true);
+      console.error('Error saving product:', error)
+      setToastMessage('Erro ao salvar produto')
+      setShowToast(true)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleDelete = async (product: Product) => {
-    if (!user) return;
+    if (!user) return
 
-    const confirmed = window.confirm(`Deseja realmente excluir "${product.name}"?`);
-    if (!confirmed) return;
+    const confirmed = window.confirm(`Deseja realmente excluir "${product.name}"?`)
+    if (!confirmed) return
 
-    setLoading(true);
+    setLoading(true)
     try {
-      await productService.deleteProduct(user._id, product._id);
-      mutate();
-      setToastMessage('Produto excluído com sucesso!');
-      setShowToast(true);
+      await productService.deleteProduct(user._id, product._id)
+      mutate()
+      setToastMessage('Produto excluído com sucesso!')
+      setShowToast(true)
     } catch (error) {
-      console.error('Error deleting product:', error);
-      setToastMessage('Erro ao excluir produto');
-      setShowToast(true);
+      console.error('Error deleting product:', error)
+      setToastMessage('Erro ao excluir produto')
+      setShowToast(true)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <IonPage>
@@ -314,7 +314,7 @@ const AdminProducts: React.FC = () => {
         />
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
-export default AdminProducts;
+export default AdminProducts

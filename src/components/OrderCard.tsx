@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   IonCard,
   IonCardContent,
@@ -10,28 +9,28 @@ import {
   IonList,
   IonNote,
   IonButton,
-} from '@ionic/react';
-import { StatusBadge } from './StatusBadge';
-import { Order } from '../types';
-import './OrderCard.css';
+} from '@ionic/react'
+import { StatusBadge } from './StatusBadge'
+import { Order } from '../types'
+import './OrderCard.css'
 
 interface OrderCardProps {
-  order: Order;
-  onStatusChange?: (orderId: string, status: 'accepted' | 'declined' | 'completed') => void;
-  isAdmin?: boolean;
+  order: Order
+  onStatusChange?: (orderId: string, status: 'accepted' | 'declined' | 'completed') => void
+  isAdmin?: boolean
 }
 
-export const OrderCard: React.FC<OrderCardProps> = ({ order, onStatusChange, isAdmin }) => {
+export const OrderCard= ({ order, onStatusChange, isAdmin }: OrderCardProps) => {
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+    const date = new Date(dateString)
     return date.toLocaleString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    });
-  };
+    })
+  }
 
   return (
     <IonCard className="order-card">
@@ -112,5 +111,5 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, onStatusChange, isA
         )}
       </IonCardContent>
     </IonCard>
-  );
-};
+  )
+}

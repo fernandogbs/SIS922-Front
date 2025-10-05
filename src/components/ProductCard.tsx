@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   IonCard,
   IonCardContent,
@@ -8,36 +8,36 @@ import {
   IonButton,
   IonIcon,
   IonBadge,
-} from '@ionic/react';
-import { addCircleOutline } from 'ionicons/icons';
-import { Product } from '../types';
-import './ProductCard.css';
+} from '@ionic/react'
+import { addCircleOutline } from 'ionicons/icons'
+import { Product } from '../types'
+import './ProductCard.css'
 
 interface ProductCardProps {
-  product: Product;
-  onAddToCart?: (product: Product) => void;
-  isAdmin?: boolean;
-  onEdit?: (product: Product) => void;
+  product: Product
+  onAddToCart?: (product: Product) => void
+  isAdmin?: boolean
+  onEdit?: (product: Product) => void
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({
+export const ProductCard = ({
   product,
   onAddToCart,
   isAdmin,
   onEdit,
-}) => {
+}: ProductCardProps) => {
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation()
     if (onAddToCart) {
-      onAddToCart(product);
+      onAddToCart(product)
     }
-  };
+  }
 
   const handleEdit = () => {
     if (onEdit) {
-      onEdit(product);
+      onEdit(product)
     }
-  };
+  }
 
   return (
     <IonCard className="product-card" onClick={isAdmin ? handleEdit : undefined}>
@@ -70,5 +70,5 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </IonCardContent>
     </IonCard>
-  );
-};
+  )
+}

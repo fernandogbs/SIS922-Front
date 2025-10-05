@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   IonContent,
   IonHeader,
@@ -18,7 +18,7 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonToast,
-} from '@ionic/react';
+} from '@ionic/react'
 import {
   logOutOutline,
   refreshOutline,
@@ -26,55 +26,55 @@ import {
   cartOutline,
   checkmarkCircleOutline,
   timeOutline,
-} from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useDashboard, useAdminOrders } from '../hooks/useOrders';
-import { OrderCard } from '../components/OrderCard';
-import { LoadingSpinner } from '../components/LoadingSpinner';
-import { orderService } from '../services/orderService';
-import { Order } from '../types';
-import './AdminDashboard.css';
+} from 'ionicons/icons'
+import { useHistory } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { useDashboard, useAdminOrders } from '../hooks/useOrders'
+import { OrderCard } from '../components/OrderCard'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { orderService } from '../services/orderService'
+import { Order } from '../types'
+import './AdminDashboard.css'
 
-const AdminDashboard: React.FC = () => {
-  const [selectedStatus, setSelectedStatus] = useState<string>('all');
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+const AdminDashboard = () => {
+  const [selectedStatus, setSelectedStatus] = useState<string>('all')
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
 
-  const { user, logout } = useAuth();
-  const history = useHistory();
+  const { user, logout } = useAuth()
+  const history = useHistory()
 
-  const { stats, isLoading: statsLoading, mutate: mutateStats } = useDashboard(user?._id || null);
+  const { stats, isLoading: statsLoading, mutate: mutateStats } = useDashboard(user?._id || null)
   const { orders, isLoading: ordersLoading, mutate: mutateOrders } = useAdminOrders(
     user?._id || null,
     selectedStatus !== 'all' ? selectedStatus : undefined
-  );
+  )
 
   const handleStatusChange = async (orderId: string, newStatus: 'accepted' | 'declined' | 'completed') => {
-    if (!user) return;
+    if (!user) return
 
     try {
-      await orderService.updateOrderStatus(user._id, orderId, newStatus);
-      mutateOrders();
-      mutateStats();
-      setToastMessage('Status do pedido atualizado!');
-      setShowToast(true);
+      await orderService.updateOrderStatus(user._id, orderId, newStatus)
+      mutateOrders()
+      mutateStats()
+      setToastMessage('Status do pedido atualizado!')
+      setShowToast(true)
     } catch (error) {
-      console.error('Error updating order status:', error);
-      setToastMessage('Erro ao atualizar status');
-      setShowToast(true);
+      console.error('Error updating order status:', error)
+      setToastMessage('Erro ao atualizar status')
+      setShowToast(true)
     }
-  };
+  }
 
   const handleRefresh = async (event: CustomEvent) => {
-    await Promise.all([mutateStats(), mutateOrders()]);
-    event.detail.complete();
-  };
+    await Promise.all([mutateStats(), mutateOrders()])
+    event.detail.complete()
+  }
 
   const handleLogout = () => {
-    logout();
-    history.push('/login');
-  };
+    logout()
+    history.push('/login')
+  }
 
   if (statsLoading) {
     return (
@@ -83,7 +83,7 @@ const AdminDashboard: React.FC = () => {
           <LoadingSpinner message="Carregando dashboard..." />
         </IonContent>
       </IonPage>
-    );
+    )
   }
 
   return (
@@ -213,7 +213,7 @@ const AdminDashboard: React.FC = () => {
         />
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
-export default AdminDashboard;
+export default AdminDashboard

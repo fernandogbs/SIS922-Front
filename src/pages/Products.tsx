@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   IonContent,
   IonHeader,
@@ -17,80 +17,66 @@ import {
   IonLabel,
   IonBadge,
   IonToast,
-} from '@ionic/react';
-import { cartOutline, logOutOutline } from 'ionicons/icons';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useProducts } from '../hooks/useProducts';
-import { useCart } from '../hooks/useCart';
-import { ProductCard } from '../components/ProductCard';
-import { LoadingSpinner } from '../components/LoadingSpinner';
-import { Product, CartItem } from '../types';
-import { cartService } from '../services/cartService';
-import { testAPI } from '../utils/testAPI';
-import './Products.css';
+} from '@ionic/react'
+import { cartOutline, logOutOutline } from 'ionicons/icons'
+import { useHistory } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { useProducts } from '../hooks/useProducts'
+import { useCart } from '../hooks/useCart'
+import { ProductCard } from '../components/ProductCard'
+import { LoadingSpinner } from '../components/LoadingSpinner'
+import { Product, CartItem } from '../types'
+import { cartService } from '../services/cartService'
+import { testAPI } from '../utils/testAPI'
+import './Products.css'
 
 const Products: React.FC = () => {
-  const [searchText, setSearchText] = useState('');
-  const [category, setCategory] = useState('all');
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [searchText, setSearchText] = useState('')
+  const [category, setCategory] = useState('all')
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
 
-  const { user, logout } = useAuth();
-  const history = useHistory();
+  const { user, logout } = useAuth()
+  const history = useHistory()
 
-  // Run API test on mount
-  useEffect(() => {
-    console.log('🧪 Running API test...');
-    testAPI().then((result) => {
-      console.log('🧪 API Test Result:', result);
-    });
-  }, []);
-
-  // Remover o filtro available temporariamente para debug
   const filters = {
     search: searchText,
     category: category !== 'all' ? category : undefined,
-    // available: true, // Comentado temporariamente para debug
-  };
+    available: true,
+  }
 
-  const { products, isLoading, isError } = useProducts(filters);
-  const { cart, mutate: mutateCart } = useCart(user?._id || null);
+  const { products, isLoading, isError } = useProducts(filters)
+  const { cart, mutate: mutateCart } = useCart(user?._id || null)
 
-  // Debug logs
-  console.log('📦 Products page - products:', products);
-  console.log('📦 Products page - isLoading:', isLoading);
-  console.log('📦 Products page - isError:', isError);
-  console.log('📦 Products page - filters:', filters);
 
-  const categories = ['all', 'Entrada', 'Prato Principal', 'Sobremesa', 'Bebida'];
+  const categories = ['all', 'Entrada', 'Prato Principal', 'Sobremesa', 'Bebida']
 
   const handleAddToCart = async (product: Product) => {
-    if (!user) return;
+    if (!user) return
 
     try {
       await cartService.addToCart({
         userId: user._id,
         productId: product._id,
         quantity: 1,
-      });
+      })
 
-      mutateCart();
-      setToastMessage(`${product.name} adicionado ao carrinho!`);
-      setShowToast(true);
+      mutateCart()
+      setToastMessage(`${product.name} adicionado ao carrinho!`)
+      setShowToast(true)
     } catch (error) {
-      console.error('Error adding to cart:', error);
-      setToastMessage('Erro ao adicionar ao carrinho');
-      setShowToast(true);
+      console.error('Error adding to cart:', error)
+      setToastMessage('Erro ao adicionar ao carrinho')
+      setShowToast(true)
     }
-  };
+  }
 
   const handleLogout = () => {
-    logout();
-    history.push('/login');
-  };
+    logout()
+    history.push('/login')
+  }
 
-  const cartItemsCount = cart?.items.reduce((sum: number, item: CartItem) => sum + item.quantity, 0) || 0;
+  const cartItemsCount = cart?.items.reduce((sum: number, item: CartItem) => sum + item.quantity, 0) || 0
 
   return (
     <IonPage>
@@ -186,7 +172,7 @@ const Products: React.FC = () => {
         />
       </IonContent>
     </IonPage>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products

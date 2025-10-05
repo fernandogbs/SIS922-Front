@@ -1,7 +1,16 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import { SWRConfig } from 'swr';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+
+// Pages
+import Login from './pages/Login';
+import Products from './pages/Products';
+import Cart from './pages/Cart';
+import Orders from './pages/Orders';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminProducts from './pages/AdminProducts';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -35,18 +44,88 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+// Protected Route Component
+const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean }> = ({
+  children,
+  adminOnly = false
+}) => {
+  const { isAuthenticated, isAdmin } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
+
+  if (adminOnly && !isAdmin) {
+    return <Redirect to="/products" />;
+  }
+
+  return <>{children}</>;
+};
+
+const AppRoutes: React.FC = () => {
+  const { isAuthenticated, isAdmin } = useAuth();
+
+  return (
+    <IonRouterOutlet>
+      <Route exact path="/login">
+        {isAuthenticated ? (
+          <Redirect to={isAdmin ? '/admin/dashboard' : '/products'} />
+        ) : (
+          <Login />
+        )}
+      </Route>
+
+      <Route exact path="/products">
+        <ProtectedRoute>
+          <Products />
+        </ProtectedRoute>
+      </Route>
+
+      <Route exact path="/cart">
+        <ProtectedRoute>
+          <Cart />
+        </ProtectedRoute>
+      </Route>
+
+      <Route exact path="/orders">
+        <ProtectedRoute>
+          <Orders />
+        </ProtectedRoute>
+      </Route>
+
+      <Route exact path="/admin/dashboard">
+        <ProtectedRoute adminOnly>
+          <AdminDashboard />
+        </ProtectedRoute>
+      </Route>
+
+      <Route exact path="/admin/products">
+        <ProtectedRoute adminOnly>
+          <AdminProducts />
+        </ProtectedRoute>
+      </Route>
+
+      <Route exact path="/">
+        <Redirect to={isAuthenticated ? (isAdmin ? '/admin/dashboard' : '/products') : '/login'} />
+      </Route>
+    </IonRouterOutlet>
+  );
+};
+
 const App: React.FC = () => (
   <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
+    <SWRConfig
+      value={{
+        revalidateOnFocus: false,
+        shouldRetryOnError: false,
+      }}
+    >
+      <AuthProvider>
+        <IonReactRouter>
+          <AppRoutes />
+        </IonReactRouter>
+      </AuthProvider>
+    </SWRConfig>
   </IonApp>
 );
 

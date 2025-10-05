@@ -1,0 +1,33 @@
+.admin-products-container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-button {
+  margin-top: 0.5rem;
+}
+
+.save-button {
+  margin-top: 2rem;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1rem;
+}
+
+.empty-state p {
+  color: var(--ion-color-medium);
+  font-size: 1.1rem;
+}
